@@ -9,6 +9,7 @@
 
 #define SPECIALTIES_NUM 4
 #define WARDS_NUM 4
+#define MAX_BEDS 20
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -58,6 +59,8 @@ const int bedCapacity[WARDS_NUM] = {
     10,
     5
 };
+
+int bedOccupancy[WARDS_NUM][MAX_BEDS] = {0};
 
 int main (void) {
     
