@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #define SPECIALTIES_NUM 4
+#define WARDS_NUM 4
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -35,6 +36,27 @@ const int dailyPatientCap[SPECIALTIES_NUM] = {
     20,
     12,
     10
+};
+
+const char wardName[WARDS_NUM][30] = {
+    "General Ward",
+    "Paediatric Ward",
+    "Surgical Ward",
+    "ICU (Intensive Care Unit)"
+};
+
+const double dailyBedRate[WARDS_NUM] = {
+    3000.00,
+    6000.00,
+    12000.00,
+    25000.00
+};
+
+const int bedCapacity[WARDS_NUM] = {
+    20,
+    10,
+    10,
+    5
 };
 
 int main (void) {
