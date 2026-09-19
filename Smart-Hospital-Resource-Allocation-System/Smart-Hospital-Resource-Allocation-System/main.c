@@ -15,6 +15,7 @@
 void displayMenu(void);
 void displaySpecialties(void);
 void displayWards(void);
+void displayBedOccupancy(void);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -119,8 +120,7 @@ int main (void) {
 
 void displayMenu(void)
 {
-    printf("\n");
-    printf("====================================================\n");
+    printf("\n====================================================\n");
     printf("       SMART HOSPITAL RESOURCE SYSTEM\n");
     printf("====================================================\n");
     printf("1. Display Doctor Specialties\n");
@@ -138,8 +138,7 @@ void displaySpecialties(void)
 {
     int i;
 
-    printf("\n");
-    printf("----------------------------------------------------\n");
+    printf("\n----------------------------------------------------\n");
     printf("DOCTOR SPECIALTIES\n");
     printf("----------------------------------------------------\n");
 
@@ -161,8 +160,7 @@ void displayWards(void)
 {
     int i;
 
-    printf("\n");
-    printf("----------------------------------------------------\n");
+    printf("\n----------------------------------------------------\n");
     printf("HOSPITAL WARDS\n");
     printf("----------------------------------------------------\n");
 
@@ -176,5 +174,39 @@ void displayWards(void)
                wardName[i],
                dailyBedRate[i],
                bedCapacity[i]);
+    }
+}
+
+void displayBedOccupancy(void)
+{
+    int i;
+    int j;
+
+    printf("\n====================================================\n");
+    printf("                BED OCCUPANCY\n");
+    printf("====================================================\n");
+
+    for (i = 0; i < WARDS_NUM; i++)
+    {
+        printf("\nWard %d: %s\n", i + 1, wardName[i]);
+
+        for (j = 0; j < bedCapacity[i]; j++)
+        {
+            if (bedOccupancy[i][j] == 0)
+            {
+                printf("Bed %02d: Available   ", j + 1);
+            }
+            else
+            {
+                printf("Bed %02d: Occupied   ", j + 1);
+            }
+
+            if ((j + 1) % 2 == 0)
+            {
+                printf("\n");
+            }
+        }
+
+        printf("\n");
     }
 }
