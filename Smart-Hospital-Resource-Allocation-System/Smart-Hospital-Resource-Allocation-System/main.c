@@ -6,6 +6,7 @@
 //
 
 #include <stdio.h>
+#include <string.h>
 
 #define SPECIALTIES_NUM 4
 #define WARDS_NUM 4
@@ -16,6 +17,7 @@ void displayMenu(void);
 void displaySpecialties(void);
 void displayWards(void);
 void displayBedOccupancy(void);
+void registerPatient(void);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -113,6 +115,10 @@ int main (void) {
                 
             case 3:
                 displayBedOccupancy();
+                break;
+                
+            case 4:
+                registerPatient();
                 break;
                 
             default:
@@ -213,4 +219,62 @@ void displayBedOccupancy(void)
 
         printf("\n");
     }
+}
+
+void registerPatient(void)
+{
+    int index;
+    int specialtyChoice;
+    int wardChoice;
+
+    if (patientCount >= MAX_PATIENTS)
+    {
+        printf("\nPatient storage is full.\n");
+        return;
+    }
+
+    index = patientCount;
+
+    printf("\n====================================================\n");
+    printf("              PATIENT REGISTRATION\n");
+    printf("====================================================\n");
+
+    patientId[index] = 1001 + index;
+
+    printf("Patient Name: ");
+    scanf(" %[^\n]", patientName[index]);
+
+    printf("Patient Age: ");
+    scanf("%d", &patientAge[index]);
+
+    do
+    {
+        printf("\nUrgency Level:\n");
+        printf("1. Normal\n");
+        printf("2. Urgent\n");
+        printf("3. Critical\n");
+        printf("Enter urgency level: ");
+        scanf("%d", &emergencyLevel[index]);
+
+    } while (emergencyLevel[index] < 1 ||
+             emergencyLevel[index] > 3);
+
+
+    displaySpecialties();
+
+    do
+    {
+        printf("\nSelect Specialty ID (1-4): ");
+        scanf("%d", &specialtyChoice);
+
+    } while (specialtyChoice < 1 ||
+             specialtyChoice > SPECIALTIES_NUM);
+
+
+    printf("\nIs the patient admitted to a ward?\n");
+    printf("1. Yes\n");
+    printf("0. No\n");
+    printf("Enter choice: ");
+    scanf("%d", &wardAdmission[index]);
+
 }
