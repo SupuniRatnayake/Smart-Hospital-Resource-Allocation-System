@@ -14,6 +14,7 @@
 
 void displayMenu(void);
 void displaySpecialties(void);
+void displayWards(void);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -90,9 +91,29 @@ int specialtyQueue[SPECIALTIES_NUM] = {0};
 
 int main (void) {
     
-    printf("Smart Hospital & Resource Allocation System\n");
-    displayMenu();
+    int choice;
     
+    printf("Smart Hospital & Resource Allocation System\n");
+    
+    do {
+        displayMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        switch (choice)
+        {
+            case 1:
+                displaySpecialties();
+                break;
+                
+            case 2:
+                displayWards();
+                break;
+                
+            default:
+                printf("\nInvalid choice. Please select correct choice from main menu.\n");
+        }
+    } while (choice != 8);
     return 0;
 }
 
@@ -133,5 +154,27 @@ void displaySpecialties(void)
                consultationFee[i],
                consultationTime[i],
                dailyPatientCap[i]);
+    }
+}
+
+void displayWards(void)
+{
+    int i;
+
+    printf("\n");
+    printf("----------------------------------------------------\n");
+    printf("HOSPITAL WARDS\n");
+    printf("----------------------------------------------------\n");
+
+    printf("%-5s %-30s %-15s %-10s\n",
+           "ID", "Ward", "Daily Rate", "Capacity");
+
+    for (i = 0; i < WARDS_NUM; i++)
+    {
+        printf("%-5d %-30s LKR %-10.2f %-10d\n",
+               i + 1,
+               wardName[i],
+               dailyBedRate[i],
+               bedCapacity[i]);
     }
 }
