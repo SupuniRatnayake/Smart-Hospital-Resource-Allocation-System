@@ -111,6 +111,10 @@ int main (void) {
                 displayWards();
                 break;
                 
+            case 3:
+                displayBedOccupancy();
+                break;
+                
             default:
                 printf("\nInvalid choice. Please select correct choice from main menu.\n");
         }
