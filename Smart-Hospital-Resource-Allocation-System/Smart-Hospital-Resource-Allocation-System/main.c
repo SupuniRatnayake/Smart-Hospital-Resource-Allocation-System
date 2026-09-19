@@ -27,6 +27,7 @@ void calculateBill(int index);
 double calculateDiscount(double gross, int age);
 void patientPriority(void);
 void displayPatientPriority(void);
+void generateReport(void);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -131,6 +132,10 @@ int main (void) {
                 
             case 5:
                 displayPatientPriority();
+                break;
+                
+            case 6:
+                generateReport();
                 break;
                 
             default:
@@ -440,4 +445,72 @@ void displayPatientPriority(void)
         return;
     }
     patientPriority();
+}
+
+void generateReport(void)
+{
+    int i;
+    int urgency1 = 0;
+    int urgency2 = 0;
+    int urgency3 = 0;
+    
+    double totalRevenue = 0.0;
+    double totalDiscount = 0.0;
+    
+    int highestPatient = 0;
+    
+    printf("\n====================================================\n");
+    printf("             PERFORMANCE REPORT\n");
+    printf("====================================================\n");
+    
+    for (i = 0; i < patientCount; i++) {
+        if (emergencyLevel[i] == 1) {
+            urgency1++;
+        }
+        else if (emergencyLevel[i] == 2) {
+            urgency2++;
+        }
+        else if (emergencyLevel[i] == 3) {
+            urgency3++;
+        }
+        
+        totalRevenue += finalPayable[i];
+        totalDiscount += discount[i];
+        
+        if (finalPayable[i] > finalPayable[highestPatient]) {
+            highestPatient = i;
+        }
+    }
+    
+    printf("\nTotal Patients Registered: %d\n", patientCount);
+    printf("\nPatients by Urgency:\n");
+    printf("Level 1 - Normal  : %d\n", urgency1);
+    printf("Level 2 - Urgent  : %d\n", urgency2);
+    printf("Level 3 - Critical: %d\n", urgency3);
+    
+    printf("\nFinancial Summary:\n");
+    printf("Total Revenue     : LKR %.2f\n", totalRevenue);
+    printf("Total Discounts   : LKR %.2f\n", totalDiscount);
+    printf("\nBed Occupancy:\n");
+    
+    for (i = 0; i < WARDS_NUM; i++) {
+        int j;
+        int occupied = 0;
+        
+        for (j = 0; j < bedCapacity[i]; j++) {
+            if (bedOccupancy[i][j] == 1) {
+                occupied++;
+            }
+        }
+        
+        printf("%-30s : %.2f%%\n", wardName[i], ((double)occupied /bedCapacity[i]) * 100);
+    }
+    
+    
+    if (patientCount > 0) {
+        printf("\nHighest-Paying Patient:\n");
+        printf("Name       : %s\n", patientName[highestPatient]);
+        printf("Patient ID : PAT-%d\n", patientId[highestPatient]);
+        printf("Final Bill : LKR %.2f\n", finalPayable[highestPatient]);
+    }
 }
