@@ -384,3 +384,11 @@ void calculateBill(int index)
     discount[index] = calculateDiscount(grossTotal[index], patientAge[index]);
     finalPayable[index] = grossTotal[index] - discount[index];
 }
+
+double calculateDiscount(double gross, int age)
+{
+    if (age < 5 || age > 65) {
+        return gross * 0.15;
+    }
+return 0.0;
+}
