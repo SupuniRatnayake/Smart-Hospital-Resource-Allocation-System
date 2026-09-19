@@ -21,6 +21,7 @@ void registerPatient(void);
 void assignBed(int patientIndex);
 double calculateWaitingTime(int specialtyIndex);
 double calculateSurcharge(double fee, int urgency);
+int findAvailableBed(int wardIndex);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -290,8 +291,6 @@ void registerPatient(void)
         daysAdmitted[index] = 0;
         assignedBed[index] = 0;
     }
-
-
 }
 
 double calculateWaitingTime(int specialtyIndex)
@@ -301,18 +300,53 @@ double calculateWaitingTime(int specialtyIndex)
 }
 
 double calculateSurcharge(double fee, int urgency) {
-    if (urgency == 1)
-    {
+    if (urgency == 1) {
         return 0.0;
     }
-    else if (urgency == 2)
-    {
+    else if (urgency == 2) {
         return fee * 0.20;
     }
-    else if (urgency == 3)
-    {
+    else if (urgency == 3) {
         return fee * 0.50;
     }
-
     return 0.0;
+}
+
+int findAvailableBed(int wardIndex)
+{
+    int i;
+
+    for (i = 0; i < bedCapacity[wardIndex]; i++) {
+        if (bedOccupancy[wardIndex][i] == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void assignBed(int patientIndex)
+{
+    int wardIndex;
+    int bedIndex;
+
+    wardIndex = patientWard[patientIndex] - 1;
+
+    bedIndex = findAvailableBed(wardIndex);
+
+    if (bedIndex == -1) {
+        printf("\nNo beds are available in this ward.\n");
+        patientWard[patientIndex] = 0;
+        wardAdmission[patientIndex] = 0;
+        assignedBed[patientIndex] = 0;
+        daysAdmitted[patientIndex] = 0;
+        return;
+    }
+
+    bedOccupancy[wardIndex][bedIndex] = 1;
+
+    assignedBed[patientIndex] = bedIndex + 1;
+
+    printf("\nBed successfully assigned.\n");
+    printf("Ward: %s\n", wardName[wardIndex]);
+    printf("Bed: #%02d\n", assignedBed[patientIndex]);
 }
