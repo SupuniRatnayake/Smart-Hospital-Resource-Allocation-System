@@ -23,6 +23,8 @@ double calculateWaitingTime(int specialtyIndex);
 double calculateSurcharge(double fee, int urgency);
 int findAvailableBed(int wardIndex);
 double calculateWardCost(int wardIndex, int days);
+void calculateBill(int index);
+double calculateDiscount(double gross, int age);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -291,6 +293,9 @@ void registerPatient(void)
         daysAdmitted[index] = 0;
         assignedBed[index] = 0;
     }
+    
+    
+    calculateBill(index);
 }
 
 double calculateWaitingTime(int specialtyIndex)
@@ -356,4 +361,26 @@ double calculateWardCost(int wardIndex, int days)
         return 0.0;
     }
     return days * dailyBedRate[wardIndex];
+}
+
+void calculateBill(int index)
+{
+    int specialtyIndex;
+    int wardIndex;
+
+    specialtyIndex = patientSpecialty[index] - 1;
+    baseFee[index] = consultationFee[specialtyIndex];
+    emergencySurcharge[index] = calculateSurcharge(baseFee[index], emergencyLevel[index]);
+
+    if (wardAdmission[index] == 1) {
+        wardIndex = patientWard[index] - 1;
+        wardCost[index] = calculateWardCost(wardIndex, daysAdmitted[index]);
+    }
+    else {
+        wardCost[index] = 0.0;
+    }
+
+    grossTotal[index] = baseFee[index] + emergencySurcharge[index] + wardCost[index];
+    discount[index] = calculateDiscount(grossTotal[index], patientAge[index]);
+    finalPayable[index] = grossTotal[index] - discount[index];
 }
