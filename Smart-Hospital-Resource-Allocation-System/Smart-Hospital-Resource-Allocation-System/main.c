@@ -22,6 +22,7 @@ void assignBed(int patientIndex);
 double calculateWaitingTime(int specialtyIndex);
 double calculateSurcharge(double fee, int urgency);
 int findAvailableBed(int wardIndex);
+double calculateWardCost(int wardIndex, int days);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -175,8 +176,7 @@ void displayWards(void)
     printf("----------------------------------------------------\n");
     printf("%-5s %-30s %-15s %-10s\n","ID", "Ward", "Daily Rate", "Capacity");
 
-    for (i = 0; i < WARDS_NUM; i++)
-    {
+    for (i = 0; i < WARDS_NUM; i++) {
         printf("%-5d %-30s LKR %-10.2f %-10d\n",
                i + 1,
                wardName[i],
@@ -295,8 +295,7 @@ void registerPatient(void)
 
 double calculateWaitingTime(int specialtyIndex)
 {
-    return specialtyQueue[specialtyIndex] *
-           consultationTime[specialtyIndex];
+    return specialtyQueue[specialtyIndex] * consultationTime[specialtyIndex];
 }
 
 double calculateSurcharge(double fee, int urgency) {
@@ -349,4 +348,12 @@ void assignBed(int patientIndex)
     printf("\nBed successfully assigned.\n");
     printf("Ward: %s\n", wardName[wardIndex]);
     printf("Bed: #%02d\n", assignedBed[patientIndex]);
+}
+
+double calculateWardCost(int wardIndex, int days)
+{
+    if (wardIndex < 0 || days <= 0) {
+        return 0.0;
+    }
+    return days * dailyBedRate[wardIndex];
 }
