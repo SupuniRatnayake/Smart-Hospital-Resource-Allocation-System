@@ -20,6 +20,7 @@ void displayBedOccupancy(void);
 void registerPatient(void);
 void assignBed(int patientIndex);
 double calculateWaitingTime(int specialtyIndex);
+double calculateSurcharge(double fee, int urgency);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -192,23 +193,18 @@ void displayBedOccupancy(void)
     printf("                BED OCCUPANCY\n");
     printf("====================================================\n");
 
-    for (i = 0; i < WARDS_NUM; i++)
-    {
+    for (i = 0; i < WARDS_NUM; i++) {
         printf("\nWard %d: %s\n", i + 1, wardName[i]);
 
-        for (j = 0; j < bedCapacity[i]; j++)
-        {
-            if (bedOccupancy[i][j] == 0)
-            {
+        for (j = 0; j < bedCapacity[i]; j++) {
+            if (bedOccupancy[i][j] == 0) {
                 printf("Bed %02d: Available   ", j + 1);
             }
-            else
-            {
+            else {
                 printf("Bed %02d: Occupied   ", j + 1);
             }
 
-            if ((j + 1) % 2 == 0)
-            {
+            if ((j + 1) % 2 == 0) {
                 printf("\n");
             }
         }
@@ -223,8 +219,7 @@ void registerPatient(void)
     int specialtyChoice;
     int wardChoice;
 
-    if (patientCount >= MAX_PATIENTS)
-    {
+    if (patientCount >= MAX_PATIENTS) {
         printf("\nPatient storage is full.\n");
         return;
     }
@@ -243,8 +238,7 @@ void registerPatient(void)
     printf("Patient Age: ");
     scanf("%d", &patientAge[index]);
 
-    do
-    {
+    do {
         printf("\nUrgency Level:\n");
         printf("1. Normal\n");
         printf("2. Urgent\n");
@@ -258,13 +252,15 @@ void registerPatient(void)
 
     displaySpecialties();
 
-    do
-    {
+    do {
         printf("\nSelect Specialty ID (1-4): ");
         scanf("%d", &specialtyChoice);
 
     } while (specialtyChoice < 1 || specialtyChoice > SPECIALTIES_NUM);
-
+    patientSpecialty[index] = specialtyChoice;
+    
+    waitingTime[index] = calculateWaitingTime(specialtyChoice - 1);
+    specialtyQueue[specialtyChoice - 1]++;
 
     printf("\nIs the patient admitted to a ward?\n");
     printf("1. Yes\n");
@@ -289,8 +285,7 @@ void registerPatient(void)
 
         assignBed(index);
     }
-    else
-    {
+    else {
         patientWard[index] = 0;
         daysAdmitted[index] = 0;
         assignedBed[index] = 0;
@@ -303,4 +298,21 @@ double calculateWaitingTime(int specialtyIndex)
 {
     return specialtyQueue[specialtyIndex] *
            consultationTime[specialtyIndex];
+}
+
+double calculateSurcharge(double fee, int urgency) {
+    if (urgency == 1)
+    {
+        return 0.0;
+    }
+    else if (urgency == 2)
+    {
+        return fee * 0.20;
+    }
+    else if (urgency == 3)
+    {
+        return fee * 0.50;
+    }
+
+    return 0.0;
 }
