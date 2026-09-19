@@ -18,6 +18,8 @@ void displaySpecialties(void);
 void displayWards(void);
 void displayBedOccupancy(void);
 void registerPatient(void);
+void assignBed(int patientIndex);
+double calculateWaitingTime(int specialtyIndex);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -103,8 +105,7 @@ int main (void) {
         printf("Enter your choice: ");
         scanf("%d", &choice);
         
-        switch (choice)
-        {
+        switch (choice) {
             case 1:
                 displaySpecialties();
                 break;
@@ -151,12 +152,9 @@ void displaySpecialties(void)
     printf("\n----------------------------------------------------\n");
     printf("DOCTOR SPECIALTIES\n");
     printf("----------------------------------------------------\n");
+    printf("%-5s %-25s %-15s %-15s %-10s\n","ID", "Specialty", "Fee", "Time", "Daily Cap");
 
-    printf("%-5s %-25s %-15s %-15s %-10s\n",
-           "ID", "Specialty", "Fee", "Time", "Daily Cap");
-
-    for (i = 0; i < SPECIALTIES_NUM; i++)
-    {
+    for (i = 0; i < SPECIALTIES_NUM; i++) {
         printf("%-5d %-25s LKR %-10.2f %-10d mins %-10d\n",
                i + 1,
                specialtyName[i],
@@ -173,9 +171,7 @@ void displayWards(void)
     printf("\n----------------------------------------------------\n");
     printf("HOSPITAL WARDS\n");
     printf("----------------------------------------------------\n");
-
-    printf("%-5s %-30s %-15s %-10s\n",
-           "ID", "Ward", "Daily Rate", "Capacity");
+    printf("%-5s %-30s %-15s %-10s\n","ID", "Ward", "Daily Rate", "Capacity");
 
     for (i = 0; i < WARDS_NUM; i++)
     {
@@ -267,8 +263,7 @@ void registerPatient(void)
         printf("\nSelect Specialty ID (1-4): ");
         scanf("%d", &specialtyChoice);
 
-    } while (specialtyChoice < 1 ||
-             specialtyChoice > SPECIALTIES_NUM);
+    } while (specialtyChoice < 1 || specialtyChoice > SPECIALTIES_NUM);
 
 
     printf("\nIs the patient admitted to a ward?\n");
@@ -276,5 +271,36 @@ void registerPatient(void)
     printf("0. No\n");
     printf("Enter choice: ");
     scanf("%d", &wardAdmission[index]);
+    
+    if (wardAdmission[index] == 1) {
+        displayWards();
 
+        do {
+            printf("\nEnter Ward ID (1-4): ");
+            scanf("%d", &wardChoice);
+
+        } while (wardChoice < 1 ||
+                 wardChoice > WARDS_NUM);
+
+        patientWard[index] = wardChoice;
+
+        printf("Enter number of days admitted: ");
+        scanf("%d", &daysAdmitted[index]);
+
+        assignBed(index);
+    }
+    else
+    {
+        patientWard[index] = 0;
+        daysAdmitted[index] = 0;
+        assignedBed[index] = 0;
+    }
+
+
+}
+
+double calculateWaitingTime(int specialtyIndex)
+{
+    return specialtyQueue[specialtyIndex] *
+           consultationTime[specialtyIndex];
 }
