@@ -25,6 +25,7 @@ int findAvailableBed(int wardIndex);
 double calculateWardCost(int wardIndex, int days);
 void calculateBill(int index);
 double calculateDiscount(double gross, int age);
+void patientPriority(void);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -391,4 +392,38 @@ double calculateDiscount(double gross, int age)
         return gross * 0.15;
     }
 return 0.0;
+}
+
+void patientPriority(void)
+{
+    int order[MAX_PATIENTS];
+    int i;
+    int j;
+    int temp;
+
+    for (i = 0; i < patientCount; i++) {
+        order[i] = i;
+    }
+
+    for (i = 0; i < patientCount - 1; i++) {
+        for (j = i + 1; j < patientCount; j++) {
+            if (emergencyLevel[order[j]] > emergencyLevel[order[i]]) {
+                temp = order[i];
+                order[i] = order[j];
+                order[j] = temp;
+            }
+        }
+    }
+    
+    printf("\n====================================================\n");
+    printf("          PATIENT PRIORITY\n");
+    printf("====================================================\n");
+
+    for (i = 0; i < patientCount; i++) {
+        printf("%d. PAT-%d | %-20s | Level %d\n",
+               i + 1,
+               patientId[order[i]],
+               patientName[order[i]],
+               emergencyLevel[order[i]]);
+    }
 }
