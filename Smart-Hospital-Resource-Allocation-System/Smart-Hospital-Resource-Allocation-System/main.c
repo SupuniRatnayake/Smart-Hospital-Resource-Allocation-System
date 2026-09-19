@@ -26,6 +26,7 @@ double calculateWardCost(int wardIndex, int days);
 void calculateBill(int index);
 double calculateDiscount(double gross, int age);
 void patientPriority(void);
+void displayPatientPriority(void);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -126,6 +127,10 @@ int main (void) {
                 
             case 4:
                 registerPatient();
+                break;
+                
+            case 5:
+                displayPatientPriority();
                 break;
                 
             default:
@@ -426,4 +431,13 @@ void patientPriority(void)
                patientName[order[i]],
                emergencyLevel[order[i]]);
     }
+}
+
+void displayPatientPriority(void)
+{
+    if (patientCount == 0){
+        printf("\nNo patients registered yet.\n");
+        return;
+    }
+    patientPriority();
 }
