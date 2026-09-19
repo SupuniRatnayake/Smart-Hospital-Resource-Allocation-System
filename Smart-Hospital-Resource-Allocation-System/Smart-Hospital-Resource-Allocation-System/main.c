@@ -65,6 +65,28 @@ const int bedCapacity[WARDS_NUM] = {
 
 int bedOccupancy[WARDS_NUM][MAX_BEDS] = {0};
 
+int patientId[MAX_PATIENTS];
+char patientName[MAX_PATIENTS][100];
+int patientAge[MAX_PATIENTS];
+int emergencyLevel[MAX_PATIENTS];
+int patientSpecialty[MAX_PATIENTS];
+
+int wardAdmission[MAX_PATIENTS];
+int patientWard[MAX_PATIENTS];
+int daysAdmitted[MAX_PATIENTS];
+int assignedBed[MAX_PATIENTS];
+
+double baseFee[MAX_PATIENTS];
+double emergencySurcharge[MAX_PATIENTS];
+double wardCost[MAX_PATIENTS];
+double grossTotal[MAX_PATIENTS];
+double discount[MAX_PATIENTS];
+double finalPayable[MAX_PATIENTS];
+double waitingTime[MAX_PATIENTS];
+
+int patientCount = 0;
+int specialtyQueue[SPECIALTIES_NUM] = {0};
+
 int main (void) {
     
     printf("Smart Hospital & Resource Allocation System\n");
