@@ -13,6 +13,7 @@
 #define MAX_PATIENTS 100
 
 void displayMenu(void);
+void displaySpecialties(void);
 
 const char specialtyName[SPECIALTIES_NUM][30] = {
     "General Practice (OPD)",
@@ -110,4 +111,27 @@ void displayMenu(void)
     printf("7. Save Bed Status\n");
     printf("8. Exit\n");
     printf("====================================================\n");
+}
+
+void displaySpecialties(void)
+{
+    int i;
+
+    printf("\n");
+    printf("----------------------------------------------------\n");
+    printf("DOCTOR SPECIALTIES\n");
+    printf("----------------------------------------------------\n");
+
+    printf("%-5s %-25s %-15s %-15s %-10s\n",
+           "ID", "Specialty", "Fee", "Time", "Daily Cap");
+
+    for (i = 0; i < SPECIALTIES_NUM; i++)
+    {
+        printf("%-5d %-25s LKR %-10.2f %-10d mins %-10d\n",
+               i + 1,
+               specialtyName[i],
+               consultationFee[i],
+               consultationTime[i],
+               dailyPatientCap[i]);
+    }
 }
